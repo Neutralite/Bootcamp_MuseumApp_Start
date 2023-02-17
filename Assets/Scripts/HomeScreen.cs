@@ -23,8 +23,8 @@ namespace MuseumApp
 
         public void LogOff()
         {
-            // TODO: LogOff
-
+            // LogOff
+            User.LogOff();
             Refresh();
         }
 
@@ -52,9 +52,7 @@ namespace MuseumApp
         private void SetupUsername()
         {
             // TODO
-            bool isLoggedIn = true;
-
-            if (!isLoggedIn)
+            if (!User.IsLoggedIn)
             {
                 loginButton.SetActive(true);
                 username.gameObject.SetActive(false);
@@ -65,6 +63,7 @@ namespace MuseumApp
             username.gameObject.SetActive(true);
 
             // TODO: username.text = <NAME>;
+            username.text = User.LoggedInUsername;
         }
     }
 }
