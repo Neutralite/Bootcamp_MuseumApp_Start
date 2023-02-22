@@ -28,8 +28,8 @@ namespace MuseumApp
                 return;
             }
 
-            var rating = Database.GetAttractionTotalRating(attractionID);
-            SetupStars(stars, rating, false);
+            var avgRating = Database.GetAttractionTotalRating(attractionID);
+            SetupStars(stars, avgRating, false);
 
         }
     }
