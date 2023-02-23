@@ -89,4 +89,16 @@ public static class Database
         connection.DeleteAll<User>();
         connection.DeleteAll<UserRating>();
     }
+
+
+    public static void DeRegisterPlayer(string username)
+    {
+        var ratingsToDelete = connection.Query<UserRating>($@"SELECT * FROM {nameof(UserRating)} WHERE {nameof(UserRating.Username)} = '{username}'");
+
+        foreach (UserRating rating in ratingsToDelete)
+        {
+            connection.Delete<UserRating>(rating.ID);
+        }
+        connection.Delete<User>(username);
+    }
 }

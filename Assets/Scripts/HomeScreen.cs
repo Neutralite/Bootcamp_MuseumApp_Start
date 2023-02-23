@@ -9,6 +9,7 @@ namespace MuseumApp
     {
         public GameObject loginButton;
         public TMP_Text username;
+        public GameObject deleteUserData;
 
         public RectTransform attractionEntriesParent;
 
@@ -56,14 +57,23 @@ namespace MuseumApp
             {
                 loginButton.SetActive(true);
                 username.gameObject.SetActive(false);
+                deleteUserData.SetActive(false);
                 return;
             }
 
             loginButton.SetActive(false);
             username.gameObject.SetActive(true);
+            deleteUserData.SetActive(true);
 
             // TODO: username.text = <NAME>;
             username.text = User.LoggedInUsername;
+        }
+
+        public void DeleteUserData()
+        {
+            Debug.Log($"{User.LoggedInUsername}'s data deleted!");
+            Database.DeRegisterPlayer(User.LoggedInUsername);
+            LogOff();
         }
     }
 }
