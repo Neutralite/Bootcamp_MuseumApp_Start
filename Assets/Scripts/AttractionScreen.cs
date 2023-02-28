@@ -11,8 +11,10 @@ namespace MuseumApp
 {
     public class AttractionScreen : MonoBehaviour
     {
+        //from https://openweathermap.org/current
         private static string weatherAPIEndpoint = "https://api.openweathermap.org/data/2.5/weather?lat={0}&lon={1}&appid={2}";
-        private static string weatherAPIKey = "e185c6f8c32910f19e8f29f72864c618";
+        // from https://home.openweathermap.org/api_keys
+        private static string weatherAPIKey = "5be8c1e5d6c7e62c9a2f9a2b14e6948f";
         [Serializable]
         public class WeatherIconEquivalency
         {
