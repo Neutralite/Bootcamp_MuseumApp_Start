@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -16,6 +18,7 @@ namespace MuseumApp
         public List<AttractionConfig> attractions;
         public List<AttractionEntryGraphics> attractionEntries;
 
+        private List<string> enabledAttractions;
         public void Signup()
         {
             SceneManager.LoadScene("SignupPopup", LoadSceneMode.Additive);
@@ -33,10 +36,32 @@ namespace MuseumApp
             SetupUsername();
 
             foreach (var attraction in attractionEntries)
-                attraction.Refresh();
+                attraction.Refresh(IsAttractionEnabled(attraction));
         }
 
+        private bool IsAttractionEnabled(AttractionEntryGraphics attraction)
+        {
+            return enabledAttractions != null && enabledAttractions.Contains(attraction.Id);
+        }
+        private void SetEnabledAttractions()
+        {
+            if (PlayfabController.Instance.titleData==null)
+            {
+                return;
+            }
+            enabledAttractions = PlayfabController.Instance.titleData["EnabledAttractions"].Split(',').ToList();
+        }
         private void Awake()
+        {
+            SetEnabledAttractions();
+            SetUpAttractions(); 
+            SetupUsername();
+            PlayfabController.Instance.titleDataAquired += OnTitleDataFetched;
+            PlayfabController.Instance.LoginWithPlayfab(PlayfabController.Instance.FetchTitleData);
+
+        }
+
+        private void SetUpAttractions()
         {
             attractionEntries = new List<AttractionEntryGraphics>(attractions.Count);
             foreach (var attraction in attractions)
@@ -45,10 +70,12 @@ namespace MuseumApp
                 newAttraction.Setup(attraction);
                 attractionEntries.Add(newAttraction);
             }
-
-            SetupUsername();
         }
-
+        private void OnTitleDataFetched()
+        {
+            SetEnabledAttractions();
+            Refresh();
+        }
         private void SetupUsername()
         {
             // TODO
