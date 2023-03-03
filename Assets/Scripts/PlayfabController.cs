@@ -95,4 +95,16 @@ public class PlayfabController
         Debug.LogWarning($"Something went wrong with request {requestName}");
         Debug.LogError(error.GenerateErrorReport());
     }
+
+    public void PlayfabRateAttraction(string attractionId, int userRating)
+    {
+        var request = new WriteClientPlayerEventRequest()
+        {
+            Body = new Dictionary<string, object>() { { "UserRating", userRating }, { "AttractionID", attractionId } },
+            EventName = "User"
+        };
+
+        PlayFabClientAPI.WritePlayerEvent(request, result => Debug.Log("Success"),error => OnPlayfabFailure(error,"PlayfabRateAttraction"));
+    }
+
 }
